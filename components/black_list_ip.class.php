@@ -1,0 +1,99 @@
+<?php 
+include_once $_SERVER["DOCUMENT_ROOT"]."/engine/functions.php";
+include_once $_SERVER["DOCUMENT_ROOT"]."/engine/database.php";
+
+class blackListIp  {
+
+    private $connection_db;
+
+    public function __construct() {
+        $this->$connection_db = connection_db();
+    }
+
+    function get_list(){
+        $rows = array();
+        $query = "SELECT `id`, `ip` FROM `black_list_ip`";
+        $get = mysqli_query($this->$connection_db,$query); 
+        while($row = mysqli_fetch_assoc($get)){
+            $rows[] = $row;
+        }
+        return array('success'=>true, 'data'=> $rows);
+    }
+
+    function update($array){
+        if($array != false){
+            if(isset($array['id'])){
+                if(isset($array['ip'])){
+                    $id = $array['id'];
+                    $ip = $array['ip'];
+                    $query = "UPDATE `black_list_ip` SET `ip`='$ip' WHERE id = '$id'";
+                    $post = mysqli_query($this->$connection_db,$query); 
+                    if($post){
+                        return array('success'=>true);
+                    }
+                    else{
+                        return array('success'=>false, 'error'=> 'error insert data', 'error_num'=>6);
+                    } 
+                }
+                else{
+                    return array('success'=>false, 'error'=> 'param ip in post json data undefined');
+                }
+            }
+            else{
+                return array('success'=>false, 'error'=> 'param id in post json data undefined');
+            }
+        }
+        else{
+            return array('success'=>false, 'error'=> 'post json data undefined', 'error_num'=>7);
+        }
+    }
+
+    function add($array){
+        if($array != false){
+            if(isset($array['ip'])){
+                $ip = $array['ip'];
+                $query = "INSERT INTO black_list_ip (`ip`) VALUES ('$ip')";
+                $post = mysqli_query($this->$connection_db, $query); 
+                if($post){
+                    return array('success'=>true);
+                }
+                else{
+                    return array('success'=>false, 'error'=> 'error insert data', 'error_num'=>6);
+                } 
+            }
+            else{
+                return array('success'=>false, 'error'=> 'param ip in post json data undefined');
+            }
+        }
+        else{
+            return array('success'=>false, 'error'=> 'post json data undefined', 'error_num'=>7);
+        }
+    }
+
+    function delete($array){
+        if($array != false){
+            if(isset($array['id'])){
+                $id = $array['id'];
+                $query = "DELETE FROM `black_list_ip` WHERE id = '$id'";
+                $post = mysqli_query($this->$connection_db, $query); 
+                if($post){
+                    return array('success'=>true);
+                }
+                else{
+                    return array('success'=>false, 'error'=> 'error insert data', 'error_num'=>6);
+                } 
+            }
+            else{
+                return array('success'=>false, 'error'=> 'param id in post json data undefined');
+            }
+        }
+        else{
+            return array('success'=>false, 'error'=> 'post json data undefined', 'error_num'=>7);
+        }
+    }
+
+    
+}
+
+
+?>
