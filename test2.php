@@ -1,5 +1,5 @@
 <?php
-
+echo 'asd';
 //auth in service
 // $headers = [
 //     'Content-Type: application/json',
