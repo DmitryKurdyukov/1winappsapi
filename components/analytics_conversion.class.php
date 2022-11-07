@@ -28,7 +28,7 @@ class analytics_conversion  {
                     while($row = mysqli_fetch_assoc($get)){
                         $device_id = $row['hash'];
                         //поиск инстала к постбэку и взятие оттуда гео
-                        $query2 = "SELECT `geo` FROM `installs_log` WHERE `device_id` = '$device_id'";
+                        $query2 = "SELECT `geo` FROM `installs_log` WHERE `app` = '$app_id' AND `device_id` = '$device_id'";
                         $get2 = mysqli_query($this->$connection_db,$query2); 
                         if(mysqli_num_rows($get2) != 0){
                             while($row2 = mysqli_fetch_assoc($get2)){
