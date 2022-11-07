@@ -72,7 +72,7 @@ class Auth  {
                                         }
 
                                         //delete old tokens
-                                        $query = "DELETE FROM `service_connect` WHERE `login_name` = '$login_name'";
+                                        $query = "DELETE FROM `service_connect` WHERE `login_name` = '$login_name_no_crypt'";
                                         $post = mysqli_query($this->$connection_db, $query);
 
                                         $query = "INSERT INTO `service_connect` (`auth_time`, `ip`, `user_agent`, `login_name`, `password`, `user`, `client`, `auth_token`) values ('$auth_time','$ip','$user_agent', '$login_name_no_crypt', '$password', '$user_id', '$client', '$auth_token')";

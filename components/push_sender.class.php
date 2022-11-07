@@ -15,6 +15,13 @@ class push_sender  {
             if(isset($array['app']) && isset($array['naming']) && isset($array['event']) && isset($array['push_title']) && isset($array['push_body'])){
                 if($array['app'] != '' && $array['naming'] != '' && $array['event'] != '' && $array['push_title'] != '' && $array['push_body'] != ''){
                    $app_package = $array['app'];
+                   $customer = null;
+                   if(isset($array['customer'])){
+                      if(is_int($array['customer'])){
+                          $customer = $array['customer'];
+                      }
+                   }
+
                    $query = "SELECT `id` FROM `apps` WHERE `package` = '$app_package'";
                    $get = mysqli_query($this->$connection_db,$query); 
                    if(mysqli_num_rows($get) != 0){
@@ -53,7 +60,12 @@ class push_sender  {
 
                         if($onesignal_app_id != '' && $onesignal_api_key != ''){
                             //выборка id юзеров по заданным параметрам
-                            $query = "SELECT `install_data`, `device_id` FROM installs_log WHERE app = '$app_id'";
+                            if($customer != null){
+                                $query = "SELECT `install_data`, `device_id` FROM installs_log WHERE app = '$app_id' AND `customer`='$customer'";
+                            }
+                            else{
+                                $query = "SELECT `install_data`, `device_id` FROM installs_log WHERE app = '$app_id'";
+                            }
                             $get = mysqli_query($this->$connection_db,$query); 
                             while($row = mysqli_fetch_assoc($get)){
                                 $sel_data = json_decode($row['install_data'], true);

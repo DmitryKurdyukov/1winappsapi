@@ -57,6 +57,7 @@ class service_connect  {
                                     $row['ip'] = $row2['ip'];
                                     $row['last_connect_time'] = $row2['last_connect_time'];
                                     $row['client'] = $row2['client'];
+                                    
                                 }
                             }
                             else{

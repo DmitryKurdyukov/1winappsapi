@@ -21,7 +21,14 @@ class Apps  {
                 // }
                 if(is_int(array_search('icon', $array['select']))){
                     $icon = true;
-                    unset($array['select'][array_search('icon', $array['select'])]);
+                    $new_arr_select = [];
+                    for($i=0; $i<count($array['select']); $i++){
+                        if($array['select'][$i] != 'icon'){
+                            $new_arr_select[] = $array['select'][$i]; 
+                        }
+                    }
+                    $array['select'] = $new_arr_select;
+                    // unset($array['select'][array_search('icon', $array['select'])]);
                     // $array['select'][array_search('icon', $array['select'])] = '';
                 }
 
@@ -421,6 +428,76 @@ class Apps  {
             }
             else{
                 return array('success'=>false, 'error'=> 'params app or update undefined or incorrect');
+            }
+        }
+        else{
+            return array('success'=>false, 'error'=> 'post json data undefined', 'error_num'=>7);
+        }
+    }
+
+
+    function delete($array){
+        if($array != false){
+            if(isset($array['app']) && isset($array['secret_password'])){
+                if($array['secret_password'] == 'asdwsx'){
+                    $app_package = $array['app'];
+                    $query = "SELECT `id` FROM `apps` WHERE `package` = '$app_package'";
+                    $get = mysqli_query($this->$connection_db,$query); 
+                    if(mysqli_num_rows($get) != 0){
+                        while($row = mysqli_fetch_assoc($get)){
+                            $app_id = $row['id'];
+                        }
+
+                        $query = "DELETE FROM `app_accounts` WHERE `app` = '$app_id'";
+                        $post = mysqli_query($this->$connection_db,$query); 
+
+                        $query = "DELETE FROM `app_events` WHERE `app_package` = '$app_package'";
+                        $post = mysqli_query($this->$connection_db,$query);
+
+                        $query = "DELETE FROM `app_icon` WHERE `app` = '$app_id'";
+                        $post = mysqli_query($this->$connection_db,$query);
+
+                        $query = "DELETE FROM `app_naming` WHERE `app` = '$app_id'";
+                        $post = mysqli_query($this->$connection_db,$query);
+
+                        $query = "DELETE FROM `app_organic` WHERE `app` = '$app_id'";
+                        $post = mysqli_query($this->$connection_db,$query);
+
+                        $query = "DELETE FROM `event_postback` WHERE `app` = '$app_package'";
+                        $post = mysqli_query($this->$connection_db,$query);
+
+                        $query = "DELETE FROM `installs_log` WHERE `app` = '$app_id'";
+                        $post = mysqli_query($this->$connection_db,$query);
+
+                        $query = "DELETE FROM `one_link_naming` WHERE `app` = '$app_id'";
+                        $post = mysqli_query($this->$connection_db,$query);
+
+                        $query = "DELETE FROM `one_link_organic` WHERE `app` = '$app_id'";
+                        $post = mysqli_query($this->$connection_db,$query);
+
+                        $query = "DELETE FROM `reserv_onelink_naming` WHERE `app` = '$app_id'";
+                        $post = mysqli_query($this->$connection_db,$query);
+
+                        $query = "DELETE FROM `apps` WHERE `id` = '$app_id'";
+                        $post = mysqli_query($this->$connection_db,$query);
+                        if($post){
+                            return array('success'=>true);
+                        }
+                        else{
+                            return array('success'=>false, 'error'=> 'sql error');
+                        }
+                    }
+                    else{
+                        return array('success'=>false, 'error'=> 'this app undefined');
+                    }
+                }
+                else{
+                    return array('success'=>false, 'error'=> 'param secret_password incorrect');
+                }
+                
+            }
+            else{
+                return array('success'=>false, 'error'=> 'params app and secret_password undefined or incorrect');
             }
         }
         else{

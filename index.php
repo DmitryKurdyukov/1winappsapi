@@ -22,6 +22,9 @@ include_once COMPONENTS_DIR."/cloac_script.class.php";
 include_once COMPONENTS_DIR."/service_connect.class.php";
 include_once COMPONENTS_DIR."/push_sender.class.php";
 include_once COMPONENTS_DIR."/transfer_users.class.php";
+include_once COMPONENTS_DIR."/api_keys.class.php";
+include_once COMPONENTS_DIR."/analytics_conversion.class.php";
+include_once COMPONENTS_DIR."/analytics_log.class.php";
 
 // if($check_auth = $auth->check_auth(getAuthHeader())){
 //     if($check_auth['success'] == true){
@@ -87,6 +90,13 @@ if($url[0] == 'api'){
                 }
                 if($url[2] == 'update'){
                     $data = $apps->update(getPost());
+                    if(isset($data)){
+                        $isset_answer = true;
+                        echo json_encode($data, JSON_UNESCAPED_UNICODE);
+                    }
+                }
+                if($url[2] == 'delete'){
+                    $data = $apps->delete(getPost());
                     if(isset($data)){
                         $isset_answer = true;
                         echo json_encode($data, JSON_UNESCAPED_UNICODE);
@@ -368,6 +378,67 @@ if($url[0] == 'api'){
                 $transfer_users = new transfer_users ;
                 if($url[2] == 'appsflyer_transfer'){
                     $data = $transfer_users->appsflyer_transfer(getPost());
+                    if(isset($data)){
+                        $isset_answer = true;
+                        echo json_encode($data, JSON_UNESCAPED_UNICODE);
+                    }
+                }
+            }
+            else{
+                $isset_answer = true;
+                echo json_encode($check_auth, JSON_UNESCAPED_UNICODE);
+            }
+        }
+    }
+    if($url[1] == 'api_keys'){
+        if($check_auth = $auth->check_auth(getAuthHeader())){
+            if($check_auth['success'] == true){
+                $api_keys = new api_keys ;
+                if($url[2] == 'get'){
+                    $data = $api_keys->get();
+                    if(isset($data)){
+                        $isset_answer = true;
+                        echo json_encode($data, JSON_UNESCAPED_UNICODE);
+                    }
+                }
+                if($url[2] == 'update'){
+                    $data = $api_keys->update(getPost());
+                    if(isset($data)){
+                        $isset_answer = true;
+                        echo json_encode($data, JSON_UNESCAPED_UNICODE);
+                    }
+                }
+            }
+            else{
+                $isset_answer = true;
+                echo json_encode($check_auth, JSON_UNESCAPED_UNICODE);
+            }
+        }
+    }
+    if($url[1] == 'analytics_log'){
+        if($check_auth = $auth->check_auth(getAuthHeader())){
+            if($check_auth['success'] == true){
+                $analytics_log = new analytics_log ;
+                if($url[2] == 'get_data'){
+                    $data = $analytics_log->get_data(getPost());
+                    if(isset($data)){
+                        $isset_answer = true;
+                        echo json_encode($data, JSON_UNESCAPED_UNICODE);
+                    }
+                }
+            }
+            else{
+                $isset_answer = true;
+                echo json_encode($check_auth, JSON_UNESCAPED_UNICODE);
+            }
+        }
+    }
+    if($url[1] == 'analytics_conversion'){
+        if($check_auth = $auth->check_auth(getAuthHeader())){
+            if($check_auth['success'] == true){
+                $analytics_conversion = new analytics_conversion ;
+                if($url[2] == 'get'){
+                    $data = $analytics_conversion->get(getPost());
                     if(isset($data)){
                         $isset_answer = true;
                         echo json_encode($data, JSON_UNESCAPED_UNICODE);
