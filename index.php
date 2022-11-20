@@ -1,12 +1,19 @@
 <?php 
 
+ini_set( 'display_errors', 1 );
 
 define ( 'ROOT_DIR', dirname ( __FILE__ ) );
 define ( 'ENGINE_DIR', ROOT_DIR . '/engine' );
 define ( 'COMPONENTS_DIR', ROOT_DIR . '/components' );
 
-
-$url = explode('/', $_GET['url']); 
+//for routs
+$url = [];
+$url_data = explode('/', $_SERVER['REQUEST_URI']); 
+for($i=0; $i<count($url_data); $i++){
+    if($url_data[$i] != ''){
+        $url[] = $url_data[$i];
+    }
+}
 
 
 include_once ENGINE_DIR."/database.php";
@@ -421,6 +428,13 @@ if($url[0] == 'api'){
                 $analytics_log = new analytics_log ;
                 if($url[2] == 'get_data'){
                     $data = $analytics_log->get_data(getPost());
+                    if(isset($data)){
+                        $isset_answer = true;
+                        echo json_encode($data, JSON_UNESCAPED_UNICODE);
+                    }
+                }
+                if($url[2] == 'get_data_by_params'){
+                    $data = $analytics_log->get_data_by_params(getPost());
                     if(isset($data)){
                         $isset_answer = true;
                         echo json_encode($data, JSON_UNESCAPED_UNICODE);

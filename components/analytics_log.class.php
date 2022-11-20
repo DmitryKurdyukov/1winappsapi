@@ -99,7 +99,7 @@ class analytics_log  {
                             
 
                             //get info about answer install
-                            $query_g = "SELECT `type`, `install_data`, `ansver`, `dop_log`, `geo`, `ansver` FROM installs_log WHERE device_id = '$device_id' ORDER BY -id LIMIT 1";
+                            $query_g = "SELECT `type`, `install_data`, `ansver`, `dop_log`, `geo`, `ansver` FROM installs_log WHERE `app`='$app_id' AND device_id = '$device_id' ORDER BY -id LIMIT 1";
                             $get_g = mysqli_query($this->$connection_db,$query_g); 
                             if(mysqli_num_rows($get_g) != 0){
                                 while($row_g = mysqli_fetch_assoc($get_g)){
@@ -218,7 +218,65 @@ class analytics_log  {
     }
 
     
+    function get_data_by_params($array){
+        if($array != false){
+            if(isset($array['device_id'])){
+                $device_id = $array['device_id'];
 
+                $answer = array(
+                    'a_o'=>array('availability'=>false, 'time'=>null),
+                    'o_o'=>array('availability'=>false, 'time'=>null),
+                    'g_o'=>array('availability'=>false, 'time'=>null),
+                    'e_l'=>array('availability'=>false, 'time'=>null),
+                );
+
+                $query = "SELECT `time` FROM app_events WHERE `name`='a_o' AND `device_id` = '$device_id' ORDER BY -id LIMIT 1";
+                $get = mysqli_query($this->$connection_db,$query); 
+                if(mysqli_num_rows($get) != 0){
+                    while($row = mysqli_fetch_assoc($get)){
+                        $answer['a_o']['availability'] = true;
+                        $answer['a_o']['time'] = $row['time'];
+                    }
+                }
+
+                $query = "SELECT `time` FROM app_events WHERE `name`='o_o' AND `device_id` = '$device_id' ORDER BY -id LIMIT 1";
+                $get = mysqli_query($this->$connection_db,$query); 
+                if(mysqli_num_rows($get) != 0){
+                    while($row = mysqli_fetch_assoc($get)){
+                        $answer['o_o']['availability'] = true;
+                        $answer['o_o']['time'] = $row['time'];
+                    }
+                }
+
+                $query = "SELECT `time` FROM app_events WHERE `name`='g_o' AND `device_id` = '$device_id' ORDER BY -id LIMIT 1";
+                $get = mysqli_query($this->$connection_db,$query); 
+                if(mysqli_num_rows($get) != 0){
+                    while($row = mysqli_fetch_assoc($get)){
+                        $answer['g_o']['availability'] = true;
+                        $answer['g_o']['time'] = $row['time'];
+                    }
+                }
+
+                $query = "SELECT `time` FROM app_events WHERE `name`='e_l' AND `device_id` = '$device_id' ORDER BY -id LIMIT 1";
+                $get = mysqli_query($this->$connection_db,$query); 
+                if(mysqli_num_rows($get) != 0){
+                    while($row = mysqli_fetch_assoc($get)){
+                        $answer['e_l']['availability'] = true;
+                        $answer['e_l']['time'] = $row['time'];
+                    }
+                }
+
+                return array('success'=>true, 'data'=> $answer);
+                
+            }
+            else{
+                return array('success'=>false, 'error'=> 'params device_id undefined or incorrect');
+            }
+        } 
+        else{
+            return array('success'=>false, 'error'=> 'post json data undefined', 'error_num'=>7);
+        }
+    }
     
 }
 

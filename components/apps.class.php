@@ -199,6 +199,9 @@ class Apps  {
                                         case 1:
                                             $row['production_type'] = 'sale';
                                             break;
+                                        case 2:
+                                            $row['production_type'] = 'rent and sale';
+                                            break;
                                     }
                                 }
                                 
@@ -370,6 +373,9 @@ class Apps  {
                                         break;
                                     case 'sale':
                                         $array['update'][$key] = 1;
+                                        break;
+                                    case 'rent and sale':
+                                        $array['update'][$key] = 2;
                                         break;
                                     default:
                                         $success_params = false; $error_success_params = $error_success_params.' production_type must be rent or sale! ';

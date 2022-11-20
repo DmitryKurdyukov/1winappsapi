@@ -47,6 +47,7 @@ class Auth  {
                                     return array('success'=>true, 'auth_token'=> $auth_token, 'roles'=>$roles, 'team'=>'');
                                 }
                                 else{
+                                    // return array('success'=>false, 'error'=> 'error insert data', 'error_num'=>6, 'sql_error'=>$this->$connection_db->error);
                                     return array('success'=>false, 'error'=> 'error insert data', 'error_num'=>6);
                                 }
                             }

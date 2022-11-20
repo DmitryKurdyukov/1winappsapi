@@ -22,17 +22,12 @@ class analytics_conversion  {
 
                 $data = [];
                 //поиск постбэков
-                $query = "SELECT `hash`, `reg`, `dep` FROM `event_postback` WHERE `app` = '$app_package'";
+                $query = "SELECT `hash`, `reg`, `dep`, `geo` FROM `event_postback` WHERE `app` = '$app_package' AND `geo` != 0";
                 $get = mysqli_query($this->$connection_db,$query); 
                 if(mysqli_num_rows($get) != 0){
                     while($row = mysqli_fetch_assoc($get)){
                         $device_id = $row['hash'];
-                        //поиск инстала к постбэку и взятие оттуда гео
-                        $query2 = "SELECT `geo` FROM `installs_log` WHERE `app` = '$app_id' AND `device_id` = '$device_id'";
-                        $get2 = mysqli_query($this->$connection_db,$query2); 
-                        if(mysqli_num_rows($get2) != 0){
-                            while($row2 = mysqli_fetch_assoc($get2)){
-                                $geo_id = $row2['geo'];
+                        $geo_id = $row['geo'];
                                 //поиск названи гео
                                 $query3 = "SELECT `name` FROM `list_geo` WHERE `id` = '$geo_id'";
                                 $get3 = mysqli_query($this->$connection_db,$query3); 
@@ -64,8 +59,6 @@ class analytics_conversion  {
                                         
                                     }
                                 }
-                            }
-                        }
                     }
                     return array('success'=>true, 'data'=> $answer);
                 }

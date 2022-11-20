@@ -2,7 +2,7 @@
 $headers = [
     'Content-Type: application/json',
     'User-Agent: '.$_SERVER['HTTP_USER_AGENT'],
-    'Auth-Token: AP4HNrBffSLV6gznIIweObPje'
+    'Auth-Token: E0m6A9FoksQwQ3xmW2X2pZaYk'
 ];
 
 // $j_data = array (
@@ -26,7 +26,7 @@ $headers = [
 
 
 $j_data = array (
-    'app' => 'com.rise.egypt.spell',
+    'app' => 'com.ninja.moneyninja',
     // 'geo' => 'RU',
     // 'naming' => 'asd',
     // 'push_title' => 'asd',
@@ -38,7 +38,7 @@ $j_data = array (
 $ch = curl_init();
 curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
 curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-curl_setopt($ch, CURLOPT_URL, 'https://api.1-w.app/api/analytics_conversion/get/');
+curl_setopt($ch, CURLOPT_URL, 'http://1winappsapi.local/api/transfer_users/appsflyer_transfer/');
 curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($j_data));
 curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
 $result = curl_exec($ch);
