@@ -1,6 +1,6 @@
 <?php 
 
-ini_set( 'display_errors', 1 );
+// ini_set( 'display_errors', 1 );
 
 define ( 'ROOT_DIR', dirname ( __FILE__ ) );
 define ( 'ENGINE_DIR', ROOT_DIR . '/engine' );

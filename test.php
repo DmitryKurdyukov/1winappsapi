@@ -2,7 +2,7 @@
 $headers = [
     'Content-Type: application/json',
     'User-Agent: '.$_SERVER['HTTP_USER_AGENT'],
-    'Auth-Token: E0m6A9FoksQwQ3xmW2X2pZaYk'
+    'Auth-Token: FTZ1qmrmeMmnITUOeaVrjzD5U'
 ];
 
 // $j_data = array (
@@ -38,7 +38,7 @@ $j_data = array (
 $ch = curl_init();
 curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
 curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-curl_setopt($ch, CURLOPT_URL, 'http://1winappsapi.local/api/transfer_users/appsflyer_transfer/');
+curl_setopt($ch, CURLOPT_URL, 'http://1winappsapi/api/transfer_users/appsflyer_transfer/');
 curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($j_data));
 curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
 $result = curl_exec($ch);

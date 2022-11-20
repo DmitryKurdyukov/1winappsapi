@@ -25,9 +25,10 @@ class transfer_users  {
                     if($appsflyer_key != ''){
                         $geo_array = [1, 8, 20, 68, 86, 87];
                         $count_dep = 0;
-                        
-                        for($i=0; i<count($geo_array); $i++){
-                            $query = "SELECT installs_log.gaid AS gaid, event_postback.hash AS device_id, installs_log.ip AS ip FROM event_postback INNER JOIN installs_log ON event_postback.geo = installs_log.geo AND event_postback.hash = installs_log.device_id AND installs_log.gaid != '' AND installs_log.gaid != 'null' WHERE event_postback.dep = 1 AND event_postback.geo = '$geo_array[$i]' LIMIT 20";
+
+
+                        foreach ($geo_array as $key => $value) {
+                            $query = "SELECT installs_log.gaid AS gaid, event_postback.hash AS device_id, installs_log.ip AS ip FROM event_postback INNER JOIN installs_log ON event_postback.geo = installs_log.geo AND event_postback.hash = installs_log.device_id AND installs_log.gaid != '' AND installs_log.gaid != 'null' WHERE event_postback.dep = 1 AND event_postback.geo = '$value' LIMIT 20";
                             $get = mysqli_query($this->$connection_db,$query); 
                             while($row = mysqli_fetch_assoc($get)){
                                 $hash = $row['device_id'];
@@ -39,8 +40,23 @@ class transfer_users  {
                                 }
                             }
                         }
-                        
 
+
+                        // for($i=0; i<count($geo_array); $i++){
+                        //     $query = "SELECT installs_log.gaid AS gaid, event_postback.hash AS device_id, installs_log.ip AS ip FROM event_postback INNER JOIN installs_log ON event_postback.geo = installs_log.geo AND event_postback.hash = installs_log.device_id AND installs_log.gaid != '' AND installs_log.gaid != 'null' WHERE event_postback.dep = 1 AND event_postback.geo = '$geo_array[$i]' LIMIT 20";
+                        //     $get = mysqli_query($this->$connection_db,$query); 
+                        //     while($row = mysqli_fetch_assoc($get)){
+                        //         $hash = $row['device_id'];
+                        //         $gaid = $row['gaid'];
+                        //         $ip = $row['ip'];
+                                
+                        //         if($this->appsflyer_send_dep($app_package, $hash, $ip, $gaid, $appsflyer_key)){
+                        //             $count_dep++;
+                        //         }
+                        //     }
+                        // }
+
+                        
 
                         return array('success'=>true, 'data'=> array('app'=>$app_package, 'count_reg'=>0, 'count_dep'=>$count_dep));
                     }
